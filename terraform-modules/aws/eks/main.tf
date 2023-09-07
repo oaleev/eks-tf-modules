@@ -105,7 +105,9 @@ module "eks" {
 
   cluster_encryption_config = [{
     provider_key_arn = aws_kms_key.eks.arn
-    resources        = ["secrets"]
+    resources        = {
+      resources = ["secrets"]
+    }
   }]
 
   cloudwatch_log_group_kms_key_id        = module.kms_cloudwatch_log_group.kms_arn
