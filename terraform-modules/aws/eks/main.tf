@@ -32,7 +32,8 @@ resource "aws_kms_key" "eks" {
 }
 
 module "kms_cloudwatch_log_group" {
-  source         = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=v2.0.37"
+  #source         = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=v2.0.37"
+  source         = "git::https://github.com/raleev/eks-tf-modules.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=v1.0.0"
   log_group_name = "/aws/eks/${var.cluster_name}/cluster"
   tags           = var.tags
 }
@@ -61,7 +62,7 @@ data "aws_iam_policy_document" "csi" {
     condition {
       test     = "StringEquals"
       variable = "${replace(module.eks.oidc_provider, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+      values   = ["s ystem:serviceaccount:kube-system:ebs-csi-controller-sa"]
     }
 
     principals {

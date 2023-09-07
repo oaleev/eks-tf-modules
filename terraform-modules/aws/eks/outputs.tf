@@ -51,4 +51,3 @@ output "eks_managed_node_groups_arns" {
     }
   ]
 }
-
