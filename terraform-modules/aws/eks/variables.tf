@@ -255,3 +255,12 @@ variable "cluster_kms_enable_rotation" {
   default     = true
   description = "(Optional) Specifies whether key rotation is enabled. Defaults to true."
 }
+
+
+variable "cluster_encryption_config" {
+  description = "Configuration block with encryption configuration for the cluster. To disable secret encryption, set this value to `{}`"
+  type        = any
+  default = {
+    resources = ["secrets"]
+  }
+}
