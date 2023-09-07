@@ -42,6 +42,7 @@ variable "cluster_endpoint_public_access" {
   description = "Enable or disable Kube API public access"
 }
 
+
 variable "cluster_endpoint_public_access_cidrs" {
   type = list(any)
   default = [
@@ -49,6 +50,16 @@ variable "cluster_endpoint_public_access_cidrs" {
   ]
   description = "Kube API public endpoint allow access cidrs"
 }
+
+
+variable "cluster_endpoint_public_access_cidrs" {
+  type = list(any)
+  default = [
+    "0.0.0.0/0"
+  ]
+  description = "Kube API private endpoint allow access cidrs"
+}
+
 
 variable "aws_auth_roles" {
   type = list(any)
@@ -108,10 +119,10 @@ variable "eks_managed_node_groups" {
       max_size       = 1
       min_size       = 1
       instance_types = ["t2.small"]
-      additional_tags  = {
+      additional_tags = {
         Name = "foo",
       }
-      k8s_labels       = {}
+      k8s_labels = {}
     }
   }
 }
@@ -157,7 +168,7 @@ variable "kubectl_binary" {
 variable "node_security_group_additional_rules" {
   type        = any
   description = "Additional security groups to add to the node_group"
-  default     = {
+  default = {
     allow_all_internal_ranges = {
       description = "Allow all inbound range from internal addresses"
       protocol    = "all"

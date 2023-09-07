@@ -26,19 +26,19 @@ provider "kubernetes" {
 }
 
 resource "aws_kms_key" "eks" {
-  description = "EKS Secret Encryption Key"
+  description         = "EKS Secret Encryption Key"
   enable_key_rotation = var.cluster_kms_enable_rotation
-  tags        = var.tags
+  tags                = var.tags
 }
 
 module "kms_cloudwatch_log_group" {
-  source                  = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=v2.0.37"
-  log_group_name          = "/aws/eks/${var.cluster_name}/cluster"
-  tags                    = var.tags
+  source         = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=v2.0.37"
+  log_group_name = "/aws/eks/${var.cluster_name}/cluster"
+  tags           = var.tags
 }
 
 //EKS 1.23
-/* It needs Amazon EBS CSI driver in order to mount volume. 
+/* It needs Amazon EBS CSI driver in order to mount volume.
 https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
 https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
 ebs csi driver is available since 1.14 so it shouldn't impact in previous versions
@@ -83,12 +83,12 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
 
 
 module "eks" {
-  source           = "terraform-aws-modules/eks/aws"
-  version          = "19.15.4"
-  cluster_name     = var.cluster_name
-  cluster_version  = var.cluster_version
-  enable_irsa      = var.enable_irsa
-  tags             = var.tags
+  source          = "terraform-aws-modules/eks/aws"
+  version         = "19.16.0"
+  cluster_name    = var.cluster_name
+  cluster_version = var.cluster_version
+  enable_irsa     = var.enable_irsa
+  tags            = var.tags
 
   # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   vpc_id = var.vpc_id
@@ -101,16 +101,16 @@ module "eks" {
   cluster_endpoint_public_access       = var.cluster_endpoint_public_access
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
 
-  cluster_endpoint_private_access                = var.cluster_endpoint_private_access
-  
+  cluster_endpoint_private_access = var.cluster_endpoint_private_access
+
   cluster_encryption_config = [{
     provider_key_arn = aws_kms_key.eks.arn
     resources        = ["secrets"]
   }]
 
-  cloudwatch_log_group_kms_key_id = module.kms_cloudwatch_log_group.kms_arn
+  cloudwatch_log_group_kms_key_id        = module.kms_cloudwatch_log_group.kms_arn
   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
-  cluster_enabled_log_types     = var.cluster_enabled_log_types
+  cluster_enabled_log_types              = var.cluster_enabled_log_types
 
   eks_managed_node_groups = var.eks_managed_node_groups
 
