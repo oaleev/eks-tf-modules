@@ -52,13 +52,13 @@ variable "cluster_endpoint_public_access_cidrs" {
 }
 
 
-variable "cluster_endpoint_public_access_cidrs" {
-  type = list(any)
-  default = [
-    "0.0.0.0/0"
-  ]
-  description = "Kube API private endpoint allow access cidrs"
-}
+#variable "cluster_endpoint_public_access_cidrs" {
+#  type = list(any)
+#  default = [
+#    "0.0.0.0/0"
+#  ]
+#  description = "Kube API private endpoint allow access cidrs"
+#}
 
 
 variable "aws_auth_roles" {
