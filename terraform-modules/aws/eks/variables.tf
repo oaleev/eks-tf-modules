@@ -259,5 +259,5 @@ variable "cluster_kms_enable_rotation" {
 variable "cluster_encryption_config" {
   description = "Configuration block with encryption configuration for the cluster. To disable secret encryption, set this value to `{}`"
   type        = any
-  default = {}
+  default     = {}
 }
